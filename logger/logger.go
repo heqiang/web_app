@@ -15,8 +15,6 @@ import (
 	"time"
 )
 
-var lg *zap.Logger
-
 // InitLogger 初始化Logger
 func InitLogger() (err error) {
 	writeSyncer := getLogWriter(
@@ -30,7 +28,7 @@ func InitLogger() (err error) {
 	}
 	core := zapcore.NewCore(encoder, writeSyncer, l)
 
-	lg = zap.New(core, zap.AddCaller())
+	lg := zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return
 }
@@ -64,7 +62,7 @@ func GinLogger() gin.HandlerFunc {
 		c.Next()
 
 		cost := time.Since(start)
-		lg.Info(path,
+		zap.L().Info(path,
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
@@ -95,7 +93,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
-					lg.Error(c.Request.URL.Path,
+					zap.L().Error(c.Request.URL.Path,
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
@@ -106,13 +104,13 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					lg.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 						zap.String("stack", string(debug.Stack())),
 					)
 				} else {
-					lg.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

@@ -14,8 +14,11 @@ mysql:
   password: 142212
   port: 3306
   dbname: "sqk_demo"
+  max_conn: 200
+  max_idle_conns: 10
 redis:
   host: "127.0.0.1"
   port: 6379
-  password: ""
+  password: "123456"
   db: 0
+  poolsize: 100
