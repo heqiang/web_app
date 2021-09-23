@@ -25,20 +25,20 @@ func main() {
 		return
 	}
 	//初始化日志
-	if err := logger.InitLogger(); err != nil {
+	if err := logger.InitLogger(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("init logger failed,err:%v\n\n", err)
 		return
 	}
 	defer zap.L().Sync()
 	zap.L().Debug("Logger init successed")
 	//初始化mysql连接
-	if err := mysqlc.InitMySQL(); err != nil {
+	if err := mysqlc.InitMySQL(settings.Conf.MysqlConfig); err != nil {
 		fmt.Printf("init mysql failed,err:%v\n\n", err)
 		return
 	}
 	defer mysqlc.Close()
 	//初始化reids连接
-	if err := redis.InitClient(); err != nil {
+	if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
 		fmt.Printf("init redis failed,err:%v\n\n", err)
 		return
 	}

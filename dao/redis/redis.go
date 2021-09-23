@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"github.com/spf13/viper"
 	"time"
+	"web_app/settings"
 )
 
 var (
@@ -13,13 +13,12 @@ var (
 )
 
 // InitClient 初始化连接
-func InitClient() (err error) {
+func InitClient(conf *settings.RedisConfig) (err error) {
 	rdb = redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s:%s", viper.GetString("redis.host"),
-			viper.GetString("redis.port")),
-		Password: viper.GetString("redis.password"), // no password set
-		DB:       viper.GetInt("redis.db"),          // use default DB
-		PoolSize: viper.GetInt("redis.poolsize"),    // 连接池大小
+		Addr:     fmt.Sprintf("%s:%d", conf.Host, conf.Port),
+		Password: conf.Password, // no password set
+		DB:       conf.Db,       // use default DB
+		PoolSize: conf.PoolSize, // 连接池大小
 	})
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
