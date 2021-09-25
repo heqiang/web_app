@@ -36,7 +36,6 @@ func main() {
 		fmt.Printf("init mysql failed,err:%v\n\n", err)
 		return
 	}
-	defer mysqlc.Close()
 	//初始化reids连接
 	if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
 		fmt.Printf("init redis failed,err:%v\n\n", err)
