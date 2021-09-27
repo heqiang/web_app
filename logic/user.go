@@ -25,3 +25,13 @@ func UserRegister(userinfo *model.User) (err error) {
 	// mysql入库
 	return mysqlc.InsertUser(&u)
 }
+
+func UserLogin(userinfo *model.User) (err error) {
+	//用户名匹配
+	err = mysqlc.QueryByUser(userinfo)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}

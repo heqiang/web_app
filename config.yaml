@@ -1,10 +1,10 @@
 app:
   name: "web_app"
-  mode: "dev"
+  mode: "release"
   port: 8081
 log:
     level: "debug"
-    filename: "web_app_log"
+    filename: "web_app_log.log"
     max_size: 200
     max_age: 30
     max_backups: 7

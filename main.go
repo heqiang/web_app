@@ -12,7 +12,6 @@ import (
 	"syscall"
 	"time"
 	"web_app/dao/mysqlc"
-	"web_app/dao/redis"
 	"web_app/logger"
 	"web_app/routers"
 	"web_app/settings"
@@ -25,7 +24,7 @@ func main() {
 		return
 	}
 	//初始化日志
-	if err := logger.InitLogger(settings.Conf.LogConfig); err != nil {
+	if err := logger.InitLogger(settings.Conf.LogConfig, settings.Conf.Mode); err != nil {
 		fmt.Printf("init logger failed,err:%v\n\n", err)
 		return
 	}
@@ -36,14 +35,14 @@ func main() {
 		fmt.Printf("init mysql failed,err:%v\n\n", err)
 		return
 	}
-	//初始化reids连接
-	if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
-		fmt.Printf("init redis failed,err:%v\n\n", err)
-		return
-	}
-	defer redis.Close()
+	////初始化reids连接
+	//if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
+	//	fmt.Printf("init redis failed,err:%v\n\n", err)
+	//	return
+	//}
+	//defer redis.Close()
 	//注册路由
-	r := routers.Setup()
+	r := routers.Setup(settings.Conf)
 	//启动服务 优雅关机
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", viper.GetString("app.port")),

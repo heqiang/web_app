@@ -15,9 +15,21 @@ func QueryUserByName(username string) (err error) {
 	db.Where("username=?", username).Take(&user)
 	fmt.Println(user.UserName)
 	if user.UserName != "" {
-		return errors.New("用户存在")
+		return errors.New("已存在该用户")
 	}
 	return nil
+}
+func QueryByUser(userinfo *model.User) (err error) {
+	var user model.User
+	db.Where("username=?", userinfo.UserName).Take(&user)
+	if user.UserName != "" {
+		password := encryptPassword(userinfo.Password)
+		if user.Password != password {
+			return errors.New("密码错误")
+		}
+		return nil
+	}
+	return errors.New("用户不存在")
 }
 
 func InsertUser(user *model.User) (err error) {
