@@ -7,17 +7,18 @@ const (
 	CodeInvaildParam
 	CodeUserExist
 	CodeUserNotExist
-	CodeInvaildPassword
+	CodeInvaildPasswordorUserName
+
 	CodeServerBusy
 )
 
 var codeMsgMap = map[ResCode]string{
-	CodeSuccess:         "success",
-	CodeInvaildParam:    "请求参数错误",
-	CodeUserExist:       "用户已存在",
-	CodeUserNotExist:    "用户不存在",
-	CodeInvaildPassword: "用户名或密码错误",
-	CodeServerBusy:      "系统繁忙",
+	CodeSuccess:                   "success",
+	CodeInvaildParam:              "请求参数错误",
+	CodeUserExist:                 "用户已存在",
+	CodeUserNotExist:              "用户不存在",
+	CodeInvaildPasswordorUserName: "密码或用户名错误",
+	CodeServerBusy:                "系统繁忙",
 }
 
 func (c ResCode) Msg() string {

@@ -19,12 +19,14 @@ func QueryUserByName(username string) (err error) {
 	}
 	return nil
 }
+
+// 3134323231325872d00fbe82ac06c423955b8ac07d2a
 func QueryByUser(userinfo *model.User) (err error) {
-	var user model.User
-	db.Where("username=?", userinfo.UserName).Take(&user)
-	if user.UserName != "" {
-		password := encryptPassword(userinfo.Password)
-		if user.Password != password {
+	password1 := userinfo.Password
+	db.Where("username=?", userinfo.UserName).Take(&userinfo)
+	if userinfo.UserName != "" {
+		password := encryptPassword(password1)
+		if userinfo.Password != password {
 			return errors.New("密码错误")
 		}
 		return nil

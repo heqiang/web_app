@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"net/http"
 	"strings"
 	"web_app/dao/mysqlc/model"
 	"web_app/logic"
@@ -29,14 +28,10 @@ func RegisterHandle(c *gin.Context) {
 	// 2业务处理
 	err := logic.UserRegister(&p)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": err,
-		})
+		ResponseError(c, CodeUserExist)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "ok",
-	})
+	ResponseSuccess(c, nil)
 }
 func LoginHadle(c *gin.Context) {
 
@@ -48,23 +43,15 @@ func LoginHadle(c *gin.Context) {
 			return
 		}
 		zap.L().Error("登录失败", zap.Error(err))
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": "参数有误",
-			"err": removeTopStruct(errs.Translate(trans)),
-		})
+		ResponseErrorWithMsg(c, removeTopStruct(errs.Translate(trans)), CodeInvaildParam)
 		return
 	}
-	err := logic.UserLogin(&u)
+	token, err := logic.UserLogin(&u)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": err.Error(),
-		})
+		ResponseError(c, CodeInvaildPasswordorUserName)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "ok",
-	})
-
+	ResponseSuccess(c, token)
 }
 
 // removeTopStruct 去除提示中的结构体名称
