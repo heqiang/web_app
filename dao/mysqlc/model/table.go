@@ -9,3 +9,13 @@ type User struct {
 	Password string `gorm:"column:password" binding:"required"`
 	Email    string `gorm:"column:email"`
 }
+
+type Community struct {
+	gorm.Model
+	CommunityId   int64  `gorm:"column:communityid" binding:"required" `
+	CommunityName string `gorm:"column:communityname"binding:"required" `
+	Introducion   string `gorm:"column:introducion" `
+}
+
+type Post struct {
+}

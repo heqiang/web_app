@@ -26,9 +26,15 @@ func InitMySQL(conf *settings.MysqlConfig) (err error) {
 		return err
 	}
 	var user model.User
-	err1 := db.AutoMigrate(user)
+	var community model.Community
+	//var post model.Post
+	err1 := db.AutoMigrate(user, community)
 	if err1 != nil {
 		return err1
 	}
 	return nil
+}
+
+func Db() *gorm.DB {
+	return db
 }
