@@ -11,7 +11,7 @@ log:
 mysql:
   host: "127.0.0.1"
   user: root
-  password: 142212
+  password: 123456
   port: 3306
   dbname: "sqk_demo"
   max_conn: 200
@@ -22,3 +22,6 @@ redis:
   password: ""
   db: 0
   poolsize: 100
+
+auth:
+  jwt_expire: 2

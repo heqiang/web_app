@@ -12,8 +12,8 @@ import (
 var db *gorm.DB
 
 func InitMySQL(conf *settings.MysqlConfig) (err error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/test_database?charset=utf8mb4&parseTime=True&loc=Local",
-		conf.User, conf.Password)
+	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		conf.User, conf.Password, conf.DbName)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 禁用外键约束
 		DisableForeignKeyConstraintWhenMigrating: true,

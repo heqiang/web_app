@@ -1,10 +1,10 @@
-package controller
+package user
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"strings"
+	"web_app/controller"
 	"web_app/dao/mysqlc/model"
 	"web_app/logic"
 )
@@ -17,21 +17,21 @@ func RegisterHandle(c *gin.Context) {
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
 			//非vaildator类型的错误 直接返回
-			ResponseError(c, CodeInvaildParam)
+			controller.ResponseError(c, controller.CodeInvaildParam)
 			return
 		}
 		//请求失败
 		zap.L().Error("用户注册 invaild param", zap.Error(err))
-		ResponseErrorWithMsg(c, removeTopStruct(errs.Translate(trans)), CodeInvaildParam)
+		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
 		return
 	}
 	// 2业务处理
 	err := logic.UserRegister(&p)
 	if err != nil {
-		ResponseError(c, CodeUserExist)
+		controller.ResponseError(c, controller.CodeUserExist)
 		return
 	}
-	ResponseSuccess(c, nil)
+	controller.ResponseSuccess(c, nil)
 }
 func LoginHadle(c *gin.Context) {
 
@@ -39,26 +39,17 @@ func LoginHadle(c *gin.Context) {
 	if err := c.ShouldBind(&u); err != nil {
 		errs, ok := err.(validator.ValidationErrors)
 		if ok {
-			ResponseError(c, CodeInvaildParam)
+			controller.ResponseError(c, controller.CodeInvaildParam)
 			return
 		}
 		zap.L().Error("登录失败", zap.Error(err))
-		ResponseErrorWithMsg(c, removeTopStruct(errs.Translate(trans)), CodeInvaildParam)
+		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
 		return
 	}
 	token, err := logic.UserLogin(&u)
 	if err != nil {
-		ResponseError(c, CodeInvaildPasswordorUserName)
+		controller.ResponseError(c, controller.CodeInvaildPasswordorUserName)
 		return
 	}
-	ResponseSuccess(c, token)
-}
-
-// removeTopStruct 去除提示中的结构体名称
-func removeTopStruct(fields map[string]string) map[string]string {
-	res := map[string]string{}
-	for field, err := range fields {
-		res[field[strings.Index(field, ".")+1:]] = err
-	}
-	return res
+	controller.ResponseSuccess(c, token)
 }

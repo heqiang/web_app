@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	dsn := fmt.Sprintf("%s:%d@tcp(127.0.0.1:3306)/test_database?charset=utf8mb4&parseTime=True&loc=Local",
-		"root", 142212)
+	dsn := fmt.Sprintf("%s:%d@tcp(127.0.0.1:3306)/sqk_demo?charset=utf8mb4&parseTime=True&loc=Local",
+		"root", 123456)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 禁用外键约束
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 	var communitys []model.Community
-	for x := 3; x < 8; x++ {
+	for x := 0; x < 8; x++ {
 		community := model.Community{
 			CommunityId:   int64(x),
 			CommunityName: fmt.Sprintf("测试name%s", strconv.Itoa(x)),

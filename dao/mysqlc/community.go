@@ -1,8 +1,17 @@
 package mysqlc
 
-import "web_app/dao/mysqlc/model"
+import (
+	"errors"
+	"go.uber.org/zap"
+	"web_app/logic"
+)
 
-func QueryAllCommunitys(comm model.Community) (comms []model.Community) {
-	db.Where(&model.Community{CommunityId: comm.CommunityId, CommunityName: comm.CommunityName}).Find(&comms)
+func QueryAllCommunitys() (comms []logic.Community, err error) {
+
+	res := db.Select("CommunityId", "CommunityName").Find(&comms)
+	if res.RowsAffected == 0 {
+		zap.L().Warn("no community in db")
+		err = errors.New("communityList is nill")
+	}
 	return
 }
