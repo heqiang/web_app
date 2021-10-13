@@ -14,7 +14,7 @@ var db *gorm.DB
 func main() {
 	var err error
 	dsn := fmt.Sprintf("%s:%d@tcp(127.0.0.1:3306)/sqk_demo?charset=utf8mb4&parseTime=True&loc=Local",
-		"root", 142212)
+		"root", 123456)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 禁用外键约束
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -26,8 +26,9 @@ func main() {
 		fmt.Println("mysql  conn err:", err)
 		return
 	}
-	//community()
+	community()
 	communityDetail()
+	QueryByName("admin")
 }
 func community() {
 	var communitys []model.Community
@@ -53,4 +54,10 @@ func communityDetail() {
 		communityDetails = append(communityDetails, communityDetail)
 	}
 	db.Create(&communityDetails)
+}
+
+func QueryByName(name string) {
+	var user model.User
+	db.Where("username=?", name).Take(&user)
+	fmt.Println(user)
 }

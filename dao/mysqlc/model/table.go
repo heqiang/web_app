@@ -13,7 +13,7 @@ type User struct {
 type Community struct {
 	gorm.Model
 	CommunityId   int64  `gorm:"column:communityid" binding:"required" `
-	CommunityName string `gorm:"column:communityname"binding:"required" `
+	CommunityName string `gorm:"column:communityname" binding:"required" `
 	Introducion   string `gorm:"column:introducion" `
 }
 
@@ -24,4 +24,11 @@ type Communitydetail struct {
 }
 
 type Post struct {
+	gorm.Model
+	Post_id      int64  `gorm:"column:post_id" `
+	Author_id    int64  `gorm:"column:author_id"  binding:"required"`
+	Status       int    `gorm:"column:status"`
+	Title        string `gorm:"column:title"  binding:"required"`
+	Content      string `gorm:"column:content"  binding:"required"`
+	Community_id int64  `gorm:"column:communityid"  binding:"required"`
 }

@@ -26,15 +26,12 @@ func UserRegister(userinfo *model.User) (err error) {
 }
 
 func UserLogin(userinfo *model.User) (token string, err error) {
-	user := &model.User{
-		UserName: userinfo.UserName,
-		Password: userinfo.Password,
-	}
-	err = mysqlc.QueryByUser(user)
+
+	err = mysqlc.QueryByUser(userinfo.UserName, userinfo.Password)
 	if err != nil {
 		return "", err
 	}
-	token, err1 := jwt.GenToken(user.UserName, user.UserId)
+	token, err1 := jwt.GenToken(userinfo.UserName, userinfo.UserId)
 	if err1 != nil {
 		return "", nil
 	}

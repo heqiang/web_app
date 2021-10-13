@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"web_app/controller/community"
+	"web_app/controller/posts"
 	"web_app/controller/user"
 	"web_app/logger"
 	"web_app/settings"
@@ -24,6 +25,7 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 		v1.GET("/communityDetail/:id", community.CommunityDetailHandle)
 		// 获取社区列表
 		v1.GET("/communityList", community.CommunityListHandle)
+		v1.POST("/post", posts.PostCommunityHandle)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

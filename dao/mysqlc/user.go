@@ -20,18 +20,16 @@ func QueryUserByName(username string) (err error) {
 	return nil
 }
 
-// 3134323231325872d00fbe82ac06c423955b8ac07d2a
-func QueryByUser(userinfo *model.User) (err error) {
-	password1 := userinfo.Password
-	db.Where("username=?", userinfo.UserName).Take(&userinfo)
-	if userinfo.UserName != "" {
-		password := encryptPassword(password1)
-		if userinfo.Password != password {
-			return errors.New("密码错误")
-		}
-		return nil
+// QueryByUser 用户信息查询
+func QueryByUser(username, password string) (err error) {
+	var user model.User
+	dbPassword := encryptPassword(password)
+	queryRes := db.Where("username=? and password=?", username, dbPassword).Take(&user)
+	if queryRes.RowsAffected != 0 {
+		return
 	}
-	return errors.New("用户不存在")
+	err = errors.New("用户不存在")
+	return
 }
 
 func InsertUser(user *model.User) (err error) {

@@ -51,5 +51,6 @@ func LoginHadle(c *gin.Context) {
 		controller.ResponseError(c, controller.CodeInvaildPasswordorUserName)
 		return
 	}
+	//获取用户信息
 	controller.ResponseSuccess(c, token)
 }

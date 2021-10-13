@@ -1,6 +1,7 @@
 package community
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
@@ -27,6 +28,8 @@ func CommunityDetailHandle(c *gin.Context) {
 
 // CommunityListHandle 社区列表
 func CommunityListHandle(c *gin.Context) {
+	userId, _ := c.Get("user_id")
+	fmt.Println("用户id：", userId)
 	communityList, err := logic.GetCommunityList()
 	if err != nil {
 		zap.L().Warn("logic.GetCommunityList() failed ", zap.Error(err))
