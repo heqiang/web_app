@@ -8,16 +8,14 @@ import (
 	"web_app/pkg/snowflake"
 )
 
-//用户注册业务逻辑
+// UserRegister 用户注册业务逻辑
 func UserRegister(userinfo *model.User) (err error) {
-	//判断用户是否存在
 	err = mysqlc.QueryUserByName(userinfo.UserName)
 	if err != nil {
 		return errors.New("用户已存在")
 	}
 	// 生成Uid
 	UUID := snowflake.GetSnowId()
-	// 构造一个user实例
 	u := model.User{
 		UserId:   UUID,
 		UserName: userinfo.UserName,
@@ -32,7 +30,6 @@ func UserLogin(userinfo *model.User) (token string, err error) {
 		UserName: userinfo.UserName,
 		Password: userinfo.Password,
 	}
-	//用户名匹配
 	err = mysqlc.QueryByUser(user)
 	if err != nil {
 		return "", err

@@ -9,10 +9,13 @@ import (
 	"web_app/dao/mysqlc/model"
 )
 
+var db *gorm.DB
+
 func main() {
+	var err error
 	dsn := fmt.Sprintf("%s:%d@tcp(127.0.0.1:3306)/sqk_demo?charset=utf8mb4&parseTime=True&loc=Local",
-		"root", 123456)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		"root", 142212)
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 禁用外键约束
 		DisableForeignKeyConstraintWhenMigrating: true,
 		NamingStrategy: schema.NamingStrategy{
@@ -23,6 +26,10 @@ func main() {
 		fmt.Println("mysql  conn err:", err)
 		return
 	}
+	//community()
+	communityDetail()
+}
+func community() {
 	var communitys []model.Community
 	for x := 0; x < 8; x++ {
 		community := model.Community{
@@ -33,4 +40,17 @@ func main() {
 		communitys = append(communitys, community)
 	}
 	db.Create(&communitys)
+
+}
+func communityDetail() {
+	var communityDetails []model.Communitydetail
+	for x := 0; x < 8; x++ {
+		communityDetail := model.Communitydetail{
+			Name: fmt.Sprintf("Name%s号", strconv.Itoa(x)),
+			Introduction: fmt.Sprintf("介绍描述%s"+
+				"", strconv.Itoa(x)),
+		}
+		communityDetails = append(communityDetails, communityDetail)
+	}
+	db.Create(&communityDetails)
 }

@@ -17,5 +17,11 @@ type Community struct {
 	Introducion   string `gorm:"column:introducion" `
 }
 
+type Communitydetail struct {
+	gorm.Model
+	Name         string `gorm:"column:name"`
+	Introduction string `gorm:"column:introduction"`
+}
+
 type Post struct {
 }

@@ -3,7 +3,7 @@ app:
   mode: "release"
   port: 8081
 log:
-    level: "debug"
+    level: "warn"
     filename: "web_app_log.log"
     max_size: 200
     max_age: 30
@@ -11,7 +11,7 @@ log:
 mysql:
   host: "127.0.0.1"
   user: root
-  password: 123456
+  password: 142212
   port: 3306
   dbname: "sqk_demo"
   max_conn: 200

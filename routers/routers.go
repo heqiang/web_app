@@ -21,7 +21,7 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 		v1.POST("/register", user.RegisterHandle)
 		v1.POST("/Login", user.LoginHadle)
 		// 社区列表
-		v1.GET("/community", community.CommunityHandle)
+		v1.GET("/communityDetail/:id", community.CommunityDetailHandle)
 		// 获取社区列表
 		v1.GET("/communityList", community.CommunityListHandle)
 	}

@@ -27,8 +27,9 @@ func InitMySQL(conf *settings.MysqlConfig) (err error) {
 	}
 	var user model.User
 	var community model.Community
+	var communitydetail model.Communitydetail
 	//var post model.Post
-	err1 := db.AutoMigrate(user, community)
+	err1 := db.AutoMigrate(user, community, communitydetail)
 	if err1 != nil {
 		return err1
 	}
