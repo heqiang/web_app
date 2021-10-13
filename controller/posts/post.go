@@ -25,7 +25,9 @@ func PostCommunityHandle(c *gin.Context) {
 		zap.L().Error("参数有误", zap.Error(errs))
 		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
 	}
+	id, _ := controller.GetCurrentUser(c)
 	post.Post_id = snowflake.GetSnowId()
+	post.Author_id = id
 	err := logic.CreatePost(&post)
 	if err != nil {
 		zap.L().Error("logic.CreatePost failed", zap.Error(err))

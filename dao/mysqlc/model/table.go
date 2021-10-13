@@ -26,7 +26,7 @@ type Communitydetail struct {
 type Post struct {
 	gorm.Model
 	Post_id      int64  `gorm:"column:post_id" `
-	Author_id    int64  `gorm:"column:author_id"  binding:"required"`
+	Author_id    int64  `gorm:"column:author_id"`
 	Status       int    `gorm:"column:status"`
 	Title        string `gorm:"column:title"  binding:"required"`
 	Content      string `gorm:"column:content"  binding:"required"`
