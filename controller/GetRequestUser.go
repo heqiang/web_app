@@ -13,7 +13,6 @@ func GetCurrentUser(c *gin.Context) (userID int64, err error) {
 	uid, ok := c.Get(CtxtUserIDKEY)
 	if !ok {
 		err = ErrorUserNotLogin
-
 		return
 	}
 	userId, ok := uid.(int64)

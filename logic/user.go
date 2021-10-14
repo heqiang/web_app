@@ -4,7 +4,6 @@ import (
 	"errors"
 	"web_app/dao/mysqlc"
 	"web_app/dao/mysqlc/model"
-	"web_app/pkg/jwt"
 	"web_app/pkg/snowflake"
 )
 
@@ -26,15 +25,5 @@ func UserRegister(userinfo *model.User) (err error) {
 }
 
 func UserLogin(userinfo *model.User) (token string, err error) {
-
-	err = mysqlc.QueryByUser(userinfo.UserName, userinfo.Password)
-	if err != nil {
-		return "", err
-	}
-	token, err1 := jwt.GenToken(userinfo.UserName, userinfo.UserId)
-	if err1 != nil {
-		return "", nil
-	}
-	return token, nil
-
+	return mysqlc.QueryByUser(userinfo.UserName, userinfo.Password)
 }

@@ -33,8 +33,9 @@ func RegisterHandle(c *gin.Context) {
 	}
 	controller.ResponseSuccess(c, nil)
 }
-func LoginHadle(c *gin.Context) {
 
+// LoginHadle 登录
+func LoginHadle(c *gin.Context) {
 	var u model.User
 	if err := c.ShouldBind(&u); err != nil {
 		errs, ok := err.(validator.ValidationErrors)

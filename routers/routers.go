@@ -18,20 +18,20 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", user.RegisterHandle)
 	v1.POST("/Login", user.LoginHadle)
-	//v1 := r.Group("/api/v1")
 	v1.Use(middlerware.JWTAuthMiddleware())
 	{
-		v1.GET("/", func(c *gin.Context) {})
 		// 社区列表
 		v1.GET("/communityDetail/:id", community.CommunityDetailHandle)
 		// 获取社区列表
 		v1.GET("/communityList", community.CommunityListHandle)
 		v1.POST("/post", posts.PostCommunityHandle)
+		v1.GET("/post/:postId", posts.GetPostDeatilHadle)
+		v1.GET("/GetPostList/:start/", posts.GetPostListHandle)
 	}
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"msg": "404",
+			"msg": "网页消失了",
 		})
 	})
 	return r

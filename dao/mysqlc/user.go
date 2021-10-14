@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"web_app/dao/mysqlc/model"
+	"web_app/pkg/jwt"
 )
 
 const serct = "1422127065@qq.com"
@@ -21,15 +22,15 @@ func QueryUserByName(username string) (err error) {
 }
 
 // QueryByUser 用户信息查询
-func QueryByUser(username, password string) (err error) {
+func QueryByUser(username, password string) (token string, err error) {
 	var user model.User
-	dbPassword := encryptPassword(password)
-	queryRes := db.Where("username=? and password=?", username, dbPassword).Take(&user)
-	if queryRes.RowsAffected != 0 {
+	queryRes := db.Where("username=? and password=?", username, encryptPassword(password)).Take(&user)
+	if queryRes.RowsAffected == 0 {
+		err = errors.New("用户不存在")
 		return
 	}
-	err = errors.New("用户不存在")
-	return
+	fmt.Println(user)
+	return jwt.GenToken(user.UserName, user.UserId)
 }
 
 func InsertUser(user *model.User) (err error) {
@@ -39,6 +40,13 @@ func InsertUser(user *model.User) (err error) {
 		return nil
 	}
 	return errors.New("新增失败")
+}
+
+// QueryByUserId 获取user信息
+func QueryByUserId(id int64) (user *model.User) {
+	user = new(model.User)
+	db.Where("user_id=?", id).Take(&user)
+	return
 }
 
 // 用户密码加密
