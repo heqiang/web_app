@@ -14,7 +14,7 @@ var db *gorm.DB
 func main() {
 	var err error
 	dsn := fmt.Sprintf("%s:%d@tcp(127.0.0.1:3306)/sqk_demo?charset=utf8mb4&parseTime=True&loc=Local",
-		"root", 123456)
+		"root", 142212)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		// 禁用外键约束
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -26,9 +26,12 @@ func main() {
 		fmt.Println("mysql  conn err:", err)
 		return
 	}
-	community()
-	communityDetail()
-	QueryByName("admin")
+	//community()
+	//communityDetail()
+	//QueryByName("admin")
+	//InsertPost()
+	QueryPost()
+
 }
 func community() {
 	var communitys []model.Community
@@ -44,11 +47,11 @@ func community() {
 
 }
 func communityDetail() {
-	var communityDetails []model.Communitydetail
+	var communityDetails []model.Community
 	for x := 0; x < 8; x++ {
-		communityDetail := model.Communitydetail{
-			Name: fmt.Sprintf("Name%s号", strconv.Itoa(x)),
-			Introduction: fmt.Sprintf("介绍描述%s"+
+		communityDetail := model.Community{
+			CommunityName: fmt.Sprintf("Name%s号", strconv.Itoa(x)),
+			Introducion: fmt.Sprintf("介绍描述%s"+
 				"", strconv.Itoa(x)),
 		}
 		communityDetails = append(communityDetails, communityDetail)
@@ -60,4 +63,26 @@ func QueryByName(name string) {
 	var user model.User
 	db.Where("username=?", name).Take(&user)
 	fmt.Println(user)
+}
+
+func InsertPost() {
+	var posts []model.Post
+	for x := 0; x < 20; x++ {
+		post := model.Post{
+			Title:   fmt.Sprintf("title%s", strconv.Itoa(x)),
+			Content: fmt.Sprintf("content%s", strconv.Itoa(x)),
+		}
+		posts = append(posts, post)
+	}
+	db.Create(&posts)
+
+}
+
+func QueryPost() {
+	posts := []*model.Post{}
+	db.Offset(1).Limit(10).Find(&posts)
+	//a := &posts
+	for _, x := range posts {
+		fmt.Println(*x)
+	}
 }

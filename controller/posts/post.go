@@ -1,7 +1,6 @@
 package posts
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -30,7 +29,6 @@ func PostCommunityHandle(c *gin.Context) {
 		return
 	}
 	id, _ := controller.GetCurrentUser(c)
-	fmt.Println(id)
 	post.Post_id = snowflake.GetSnowId()
 	post.AuthorId = id
 	err := logic.CreatePost(&post)
@@ -43,8 +41,8 @@ func PostCommunityHandle(c *gin.Context) {
 
 }
 
-// 获取帖子的详情
-func GetPostDeatilHadle(c *gin.Context) {
+// GetPostDeatilHadle 获取帖子的详情
+func GetPostDeatilHandle(c *gin.Context) {
 	postId, err := strconv.ParseInt(c.Param("postId"), 10, 64)
 	if err != nil {
 		zap.L().Error("get postId failed ", zap.Error(err))
@@ -69,8 +67,29 @@ func GetPostDeatilHadle(c *gin.Context) {
 }
 
 func GetPostListHandle(c *gin.Context) {
-	//pageStr := c.Param("start")
-	//limit := c.Param("limit")
-	//allPosts := logic.GetPostList()
-	//controller.ResponseSuccess(c, allPosts)
+	page, _ := strconv.Atoi(c.Query("page"))
+	if page <= 0 {
+		page = 1
+	}
+	size, _ := strconv.Atoi(c.Query("size"))
+	switch {
+	case size > 100:
+		size = 100
+	case size <= 0:
+		size = 10
+	}
+	offset := (page - 1) * size
+	allPosts, total, err := logic.GetPostList(offset, size)
+	if err != nil {
+		zap.L().Error(" logic.GetPostList failed ", zap.Error(err))
+		return
+	}
+	paginationQ := &postmodel.PaginationQ{
+		Ok:    true,
+		Size:  uint(size),
+		Page:  uint(page),
+		Total: total,
+		Data:  allPosts,
+	}
+	controller.ResponseSuccess(c, paginationQ)
 }

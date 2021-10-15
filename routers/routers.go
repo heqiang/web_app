@@ -25,8 +25,8 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 		// 获取社区列表
 		v1.GET("/communityList", community.CommunityListHandle)
 		v1.POST("/post", posts.PostCommunityHandle)
-		v1.GET("/post/:postId", posts.GetPostDeatilHadle)
-		v1.GET("/GetPostList/:start/", posts.GetPostListHandle)
+		v1.GET("/post/:postId", posts.GetPostDeatilHandle)
+		v1.POST("/GetPostList", posts.GetPostListHandle)
 	}
 
 	r.NoRoute(func(c *gin.Context) {
