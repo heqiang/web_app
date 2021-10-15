@@ -27,6 +27,8 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 		v1.POST("/post", posts.PostCommunityHandle)
 		v1.GET("/post/:postId", posts.GetPostDeatilHandle)
 		v1.POST("/GetPostList", posts.GetPostListHandle)
+		//投票
+		v1.POST("/vote", posts.PostVotedHandle)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

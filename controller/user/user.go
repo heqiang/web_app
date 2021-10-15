@@ -9,7 +9,7 @@ import (
 	"web_app/logic"
 )
 
-// RegisterHandle用户注册
+// RegisterHandle 用户注册
 func RegisterHandle(c *gin.Context) {
 	var p model.User
 	// 1 参数校验

@@ -58,7 +58,7 @@ func InitTrans(locale string) (err error) {
 	return
 }
 
-// removeTopStruct 去除提示中的结构体名称
+// RemoveTopStruct 去除提示中的结构体名称
 func RemoveTopStruct(fields map[string]string) map[string]string {
 	res := map[string]string{}
 	for field, err := range fields {

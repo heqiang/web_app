@@ -26,3 +26,11 @@ type Post struct {
 	Content     string `gorm:"column:content"  binding:"required"`
 	CommunityId int64  `gorm:"column:communityid"  binding:"required"`
 }
+
+// VotedParam  投票
+type Voted struct {
+	// UserId  从token中获取
+	PostId int64 `json:"post_id,string"`
+	// 赞同 1或者反对 -1
+	Direction int `json:"direection,string"`
+}

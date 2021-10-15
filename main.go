@@ -11,7 +11,9 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"web_app/controller"
 	"web_app/dao/mysqlc"
+	"web_app/dao/redis"
 	"web_app/logger"
 	"web_app/routers"
 	"web_app/settings"
@@ -35,12 +37,17 @@ func main() {
 		fmt.Printf("init mysql failed,err:%v\n\n", err)
 		return
 	}
-	////初始化reids连接
-	//if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
-	//	fmt.Printf("init redis failed,err:%v\n\n", err)
-	//	return
-	//}
-	//defer redis.Close()
+	//初始化reids连接
+	if err := redis.InitClient(settings.Conf.RedisConfig); err != nil {
+		fmt.Printf("init redis failed,err:%v\n\n", err)
+		return
+	}
+	defer redis.Close()
+	//初始化gin框架内置的校验翻译器
+	if err := controller.InitTrans("zh"); err != nil {
+		fmt.Println("翻译器初始化失败")
+		return
+	}
 	//注册路由
 	r := routers.Setup(settings.Conf)
 	//启动服务 优雅关机

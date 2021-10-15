@@ -93,3 +93,19 @@ func GetPostListHandle(c *gin.Context) {
 	}
 	controller.ResponseSuccess(c, paginationQ)
 }
+func PostVotedHandle(c *gin.Context) {
+	voted := new(postmodel.VoteData)
+	if err := c.ShouldBind(voted); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			zap.L().Error("请求参数错误", zap.Error(err))
+			controller.ResponseError(c, controller.CodeInvaildParam)
+			return
+		}
+		zap.L().Error("请求参数验证错误", zap.Error(err))
+		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
+		return
+	}
+	logic.PostVote(voted)
+	controller.ResponseSuccess(c, nil)
+}

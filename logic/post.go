@@ -31,3 +31,7 @@ func GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int6
 	}
 	return
 }
+
+func PostVote(voted *postmodel.VoteData) {
+
+}
