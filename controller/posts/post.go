@@ -106,6 +106,11 @@ func PostVotedHandle(c *gin.Context) {
 		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
 		return
 	}
-	logic.PostVote(voted)
+	userId, err := controller.GetCurrentUser(c)
+	if err != nil {
+		controller.ResponseError(c, controller.CodeNeedAuth)
+		return
+	}
+	logic.PostVote(voted, userId)
 	controller.ResponseSuccess(c, nil)
 }

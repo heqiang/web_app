@@ -32,6 +32,16 @@ func GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int6
 	return
 }
 
-func PostVote(voted *postmodel.VoteData) {
+/*
+ 帖子的热度 如果在一段时间内没有变化 那么旧帖子就不应该参与排名了
+ 投一票就加432分  86400/200->200张帖子就可以让帖子续一天
+ 投票的几种情况
+	direction = 1 时,有两种情况：
+			1.之前没投过票，现在投赞成票
+			2.之前投反对票 现在改投赞成票
+*/
+
+// PostVote 帖子投票
+func PostVote(voted *postmodel.VoteData, userid int64) {
 
 }
