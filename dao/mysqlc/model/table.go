@@ -29,6 +29,7 @@ type Post struct {
 
 // VotedParam  投票
 type Voted struct {
+	gorm.Model
 	// UserId  从token中获取
 	PostId int64 `json:"post_id,string"`
 	// 赞同 1或者反对 -1

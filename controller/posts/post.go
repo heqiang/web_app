@@ -111,6 +111,10 @@ func PostVotedHandle(c *gin.Context) {
 		controller.ResponseError(c, controller.CodeNeedAuth)
 		return
 	}
-	logic.PostVote(voted, userId)
+	err = logic.PostVote(voted, userId)
+	if err != nil {
+		zap.L().Error("votedForpost", zap.Error(err))
+		controller.ResponseError(c, controller.CodeServerBusy)
+	}
 	controller.ResponseSuccess(c, nil)
 }
