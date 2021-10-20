@@ -9,7 +9,15 @@ import (
 )
 
 func CreatePost(postmode *model.Post) (err error) {
-	return mysqlc.InsertPost(postmode)
+	err = mysqlc.InsertPost(postmode)
+	if err != nil {
+		return err
+	}
+	err = redis.CreatePostTime(postmode.Post_id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func GetPostDetail(postId int64) (postDetail *model.Post, err error) {
@@ -56,7 +64,5 @@ func GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int6
 // PostVote 帖子投票
 func PostVote(voted *postmodel.VoteData, userid int64) error {
 	return redis.VoteForPost(strconv.Itoa(int(userid)), strconv.Itoa(int(voted.PostId)), float64(voted.Direection))
-	//判断帖子的时间限制
-	//更新帖子的分数
-	//记录用户为该帖子的投票分数
+
 }

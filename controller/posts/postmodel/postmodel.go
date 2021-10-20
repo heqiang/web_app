@@ -35,5 +35,5 @@ type VoteData struct {
 	// UserId  从token中获取
 	PostId int64 `json:"post_id,string" binding:"required"`
 	// 赞同 1或者反对 -1
-	Direection int `json:"direection,string" binding:"required,oneof=1 0 -1"`
+	Direection int `json:"direection,string" binding:"oneof=1 0 -1"`
 }

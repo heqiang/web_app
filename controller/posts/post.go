@@ -115,6 +115,7 @@ func PostVotedHandle(c *gin.Context) {
 	if err != nil {
 		zap.L().Error("votedForpost", zap.Error(err))
 		controller.ResponseError(c, controller.CodeServerBusy)
+		return
 	}
 	controller.ResponseSuccess(c, nil)
 }
