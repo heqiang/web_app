@@ -29,7 +29,6 @@ func QueryByUser(username, password string) (token string, err error) {
 		err = errors.New("用户不存在")
 		return
 	}
-	fmt.Println(user)
 	return jwt.GenToken(user.UserName, user.UserId)
 }
 
