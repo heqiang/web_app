@@ -17,6 +17,7 @@ type PostList struct {
 }
 type ApiPostDetail struct {
 	AuthorName       string
+	Votes            int64 `json:"votes"`
 	*model.Community `json:"community"`
 	*model.Post      `json:"post"`
 }
@@ -36,4 +37,10 @@ type VoteData struct {
 	PostId int64 `json:"post_id,string" binding:"required"`
 	// 赞同 1或者反对 -1
 	Direection int `json:"direection,string" binding:"oneof=1 0 -1"`
+}
+
+type ParamPostList struct {
+	Page  int64  `json:"page" form:"page"`
+	Size  int64  `json:"size"  form:"size"`
+	Order string `json:"order" form:"order"`
 }

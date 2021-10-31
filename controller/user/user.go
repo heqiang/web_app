@@ -9,7 +9,17 @@ import (
 	"web_app/logic"
 )
 
-// RegisterHandle 用户注册
+// GetPostListHandler2 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Accept application/json
+// @Produce application/json
+// @termsOfService http://swagger.io/terms/
+// @Param object query model.User false "查询参数"
+// @Router /posts2 [get]
+// @host 127.0.0.1
+// @Router /register [post]
+
 func RegisterHandle(c *gin.Context) {
 	var p model.User
 	// 1 参数校验

@@ -5,7 +5,9 @@ import (
 	"errors"
 	"github.com/go-redis/redis/v8"
 	"math"
+	"strconv"
 	"time"
+	"web_app/dao/mysqlc/model"
 )
 
 const (
@@ -28,6 +30,7 @@ const (
 var (
 	ctx               = context.Background()
 	ErrVoteTimeExpire = errors.New("超出投票时间")
+	ErrVoteRepested   = errors.New("不允许投票")
 )
 
 // CreatePostTime 这里面的两个操作都必须同时成功 要么都失败
@@ -60,6 +63,11 @@ func VoteForPost(userid, postId string, value float64) (err error) {
 	// 2更新帖子的分数
 	//先获取用户给这个帖子的投票纪录 看是-1 0 还是1
 	voteValue := rdb.ZScore(ctx, KeyPostVoted+postId, userid).Val()
+
+	//不允许重复投票
+	if value == voteValue {
+		return ErrVoteTimeExpire
+	}
 	var op float64
 	if value > voteValue {
 		op = 1
@@ -80,4 +88,28 @@ func VoteForPost(userid, postId string, value float64) (err error) {
 	})
 	_, err = pipeline.Exec(ctx)
 	return err
+}
+
+func GetPostVoteData(posts []model.Post) (data []int64, err error) {
+	//使用pipeline 一次发送多条命令 减少rtt
+	//for _, post := range posts {
+	//	// 查找key中帖子的分数是1的元素的数量,统计赞成票的数量
+	//	v1 := rdb.ZCount(ctx, strconv.FormatInt(post.Post_id, 10), "-1", "1").Val()
+	//	data = append(data, v1)
+	//}
+	//keys := make([]string, 0, len(posts))
+	pipeline := rdb.Pipeline()
+	for _, post := range posts {
+		pipeline.ZCount(ctx, strconv.FormatInt(post.Post_id, 10), "1", "1")
+	}
+	cmders, err := pipeline.Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+	data = make([]int64, 0, len(cmders))
+	for _, cmder := range cmders {
+		v := cmder.(*redis.IntCmd).Val()
+		data = append(data, v)
+	}
+	return data, nil
 }

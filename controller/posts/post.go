@@ -1,6 +1,7 @@
 package posts
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -12,6 +13,11 @@ import (
 	"web_app/dao/mysqlc/model"
 	"web_app/logic"
 	"web_app/pkg/snowflake"
+)
+
+const (
+	orderTime  = "time"
+	orderScore = "score"
 )
 
 // PostCommunityHandle 创建帖子
@@ -41,7 +47,18 @@ func PostCommunityHandle(c *gin.Context) {
 
 }
 
-// GetPostDeatilHadle 获取帖子的详情
+// GetPostListHandler2 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /posts2 [get]
+
 func GetPostDeatilHandle(c *gin.Context) {
 	postId, err := strconv.ParseInt(c.Param("postId"), 10, 64)
 	if err != nil {
@@ -93,6 +110,51 @@ func GetPostListHandle(c *gin.Context) {
 	}
 	controller.ResponseSuccess(c, paginationQ)
 }
+
+// 帖子的列表按照时间还是分数
+// GetPostListHandler2 /api/v1/post2?page=1&size=10&oreder=time
+// GetPostListHandler2 /api/v1/post2?page=1&size=10&oreder=score
+func GetPostListHandler2(c *gin.Context) {
+	paramlist := postmodel.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: orderTime,
+	}
+	err := c.ShouldBindQuery(&paramlist)
+	if err != nil {
+		zap.L().Error("GetPostListHandle2 with invaild param", zap.Error(err))
+		controller.ResponseError(c, controller.CodeInvaildParam)
+		return
+	}
+	page, _ := strconv.Atoi(c.Query("page"))
+	if page <= 0 {
+		page = 1
+	}
+	size, _ := strconv.Atoi(c.Query("size"))
+	switch {
+	case size > 100:
+		size = 100
+	case size <= 0:
+		size = 10
+	}
+	offset := (page - 1) * size
+	allPosts, total, err := logic.GetPostList(offset, size)
+	category := c.Query("order")
+	fmt.Println(category)
+	if err != nil {
+		zap.L().Error(" logic.GetPostList failed ", zap.Error(err))
+		return
+	}
+	paginationQ := &postmodel.PaginationQ{
+		Ok:    true,
+		Size:  uint(size),
+		Page:  uint(page),
+		Total: total,
+		Data:  allPosts,
+	}
+	controller.ResponseSuccess(c, paginationQ)
+}
+
 func PostVotedHandle(c *gin.Context) {
 	voted := new(postmodel.VoteData)
 	if err := c.ShouldBind(voted); err != nil {
