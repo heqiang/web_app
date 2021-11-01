@@ -2,11 +2,12 @@ package model
 
 import "gorm.io/gorm"
 
+// User 用户注册的参数
 type User struct {
 	gorm.Model
 	UserId   int64  `gorm:"column:user_id" `
-	UserName string `gorm:"column:username" binding:"required"`
-	Password string `gorm:"column:password" binding:"required"`
+	UserName string `gorm:"column:username" binding:"required"` //用户姓名
+	Password string `gorm:"column:password" binding:"required"` //用户密码
 	Email    string `gorm:"column:email"`
 }
 

@@ -5,10 +5,11 @@ import (
 	"net/http"
 )
 
+// ResponseData 数据接口相应数据
 type ResponseData struct {
-	Code ResCode     `json:"code"`
-	Msg  interface{} `json:"msg"`
-	Data interface{} `json:"data,omitempty"`
+	Code ResCode     `json:"code"`           //业务相应状态码
+	Msg  interface{} `json:"msg"`            //提示信息
+	Data interface{} `json:"data,omitempty"` // 数据
 }
 
 func ResponseError(c *gin.Context, code ResCode) {
