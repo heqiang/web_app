@@ -13,7 +13,10 @@ func (Post) TableName() string {
 	return "post"
 }
 
-type PostList struct {
+type PostSwag struct {
+	Title       string `gorm:"column:title"  binding:"required"`
+	Content     string `gorm:"column:content"  binding:"required"`
+	CommunityId int64  `gorm:"column:communityid"  binding:"required"`
 }
 type ApiPostDetail struct {
 	AuthorName       string

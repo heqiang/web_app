@@ -19,6 +19,13 @@ import (
 	"web_app/settings"
 )
 
+// @title Swagger Example API
+// @version 0.0.1
+// @description This is a sample Server pets
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name token
+// @BasePath /
 func main() {
 	//加载配置
 	if err := settings.Init(); err != nil {
