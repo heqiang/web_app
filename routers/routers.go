@@ -32,7 +32,7 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 		v1.GET("/communityList", community.CommunityListHandle)
 		v1.POST("/post", posts.PostCommunityHandle)
 		v1.GET("/post/:postId", posts.GetPostDeatilHandle)
-		v1.POST("/GetPostList", posts.GetPostListHandle)
+		v1.GET("/GetPostList", posts.GetPostListHandle)
 		v1.POST("/GetPostList2", posts.GetPostListHandle)
 		//投票
 		v1.POST("/vote", posts.PostVotedHandle)

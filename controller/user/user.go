@@ -9,17 +9,13 @@ import (
 	"web_app/logic"
 )
 
-// GetPostListHandler2 升级版帖子列表接口
-// @Summary 升级版帖子列表接口
-// @Description 可按社区按时间或分数排序查询帖子列表接口
-// @Accept application/json
-// @Produce application/json
-// @termsOfService http://swagger.io/terms/
-// @Param object query model.User false "查询参数"
-// @Router /posts2 [get]
-// @host 127.0.0.1
-// @Router /register [post]
-
+// RegisterHandle 注册
+// @Tags 用户相关接口
+// @Summary 用户注册接口
+// @title 用户注册
+// @Param data body swagtype.UserRegiter true "请示参数data"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Router /api/v1/register  [post]
 func RegisterHandle(c *gin.Context) {
 	var p model.User
 	// 1 参数校验
@@ -45,6 +41,13 @@ func RegisterHandle(c *gin.Context) {
 }
 
 // LoginHadle 登录
+// @Tags 用户相关接口
+// @Summary 用户登录接口
+// @title 用户登录
+// @Param logindata body swagtype.UserLogin true "请示参数data"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Host 127.0.0.1
+// @Router /api/v1/Login  [post]
 func LoginHadle(c *gin.Context) {
 	var u model.User
 	if err := c.ShouldBind(&u); err != nil {

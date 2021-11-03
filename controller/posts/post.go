@@ -20,7 +20,16 @@ const (
 	orderScore = "score"
 )
 
-// PostCommunityHandle 创建帖子
+// PostCommunityHandle
+// @Tags 帖子相关接口
+// @Security ApiKeyAuth
+// @Description 用户发帖
+// @Summary 用户发帖
+// @title 用户发帖
+// @Security
+// @Param data body model.Post true "请示参数data"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Router /api/v1/post  [post]
 func PostCommunityHandle(c *gin.Context) {
 	//获取帖子的参数然后进行校验
 	var post model.Post
@@ -47,18 +56,16 @@ func PostCommunityHandle(c *gin.Context) {
 
 }
 
-// GetPostListHandler2 升级版帖子列表接口
-// @Summary 升级版帖子列表接口
-// @Description 可按社区按时间或分数排序查询帖子列表接口
+// GetPostDeatilHandle
 // @Tags 帖子相关接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string false "Bearer 用户令牌"
-// @Param object query models.ParamPostList false "查询参数"
+// @Description 帖子详情
+// @Summary 帖子接口
+// @title 用户发帖
+// @Security
 // @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
-// @Router /posts2 [get]
-
+// @Param postId path int true "postId"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Router /api/v1/post/{postId}  [get]
 func GetPostDeatilHandle(c *gin.Context) {
 	postId, err := strconv.ParseInt(c.Param("postId"), 10, 64)
 	if err != nil {
@@ -83,6 +90,16 @@ func GetPostDeatilHandle(c *gin.Context) {
 	controller.ResponseSuccess(c, postApiDetail)
 }
 
+// GetPostListHandle
+// @Tags 帖子相关接口
+// @Description 获取所有的帖子
+// @Summary 获取所有的帖子
+// @title 获取所有的帖子
+// @Security ApiKeyAuth
+// @Param page path string false "页数"
+// @Param size path string false "size"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Router /api/v1/GetPostList  [get]
 func GetPostListHandle(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	if page <= 0 {
@@ -155,6 +172,15 @@ func GetPostListHandler2(c *gin.Context) {
 	controller.ResponseSuccess(c, paginationQ)
 }
 
+// PostVotedHandle
+// @Tags 帖子相关接口
+// @Description 帖子投票
+// @Summary 帖子投票
+// @title 帖子投票
+// @Security ApiKeyAuth
+// @Param voteData body  postmodel.VoteData true "投票参数data"
+// @Success 200 object controller.ResponseData "请求成功"
+// @Router /api/v1/vote  [post]
 func PostVotedHandle(c *gin.Context) {
 	voted := new(postmodel.VoteData)
 	if err := c.ShouldBind(voted); err != nil {
