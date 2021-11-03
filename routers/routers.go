@@ -5,6 +5,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
+	"time"
 	"web_app/controller/community"
 	"web_app/controller/posts"
 	"web_app/controller/user"
@@ -20,7 +21,7 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 	r := gin.New()
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middlerware.RateLimitMiddleware(2*time.Second, 1))
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", user.RegisterHandle)
 	v1.POST("/Login", user.LoginHadle)
