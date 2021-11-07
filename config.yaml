@@ -9,15 +9,15 @@ log:
     max_age: 30
     max_backups: 7
 mysql:
-  host: "127.0.0.1"
-  user: root
-  password: 123456
+  host: mysql80
+  user: "root"
+  password: 142212
   port: 3306
-  dbname: "sqk_demo"
+  dbname: "web_app"
   max_conn: 200
   max_idle_conns: 10
 redis:
-  host: "127.0.0.1"
+  host: redis507
   port: 6379
   password: ""
   db: 0

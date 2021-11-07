@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  redis507:
+    image: redis:5.0.7
+    ports:
+      - "6379:6379"
+    container_name: myredis01
+  mysql80:
+    image: mysql:8.0.0
+    ports:
+      - "3306:3306"                           #将外部端口3306映射为内部默认创建的3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 142212                #数据库初始话为root用户设置的默认密码
+      MYSQL_DATABASE: web_app                #数据库名
+      MYSQL_PASSWORD: 142212                   #自定义数据库的用户，权限只作用于MYSQL_DATABASE配置的数据库
+    restart: on-failure
+  gin_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis507
+      - mysql80
