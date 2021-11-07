@@ -22,7 +22,8 @@ docker容器话部署
  > docker-compose up  
 #### 四 mysql 外网访问授权
 > 1 grant all privileges on *.* to 'root'@'[host]' identified by '[password]' with grant option;   
-> 2 flush privileges;
+> 2 flush privileges;  
+
 <font style="color:red">***注意***</font>
 若出现mysql连接失败 根据第四步的步骤完成后重新构建即可  
 原因：mysql访问机制 root 用户本地可以访问 外网访问不行 所以需要授权
