@@ -26,6 +26,5 @@
 + jwt验证，雪花算法做为id
 + swagger文档
 + 采用令牌桶实现限流
-
-docker容器化部署
++ docker容器化部署
 
