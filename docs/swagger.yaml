@@ -1,0 +1,203 @@
+basePath: /
+definitions:
+  controller.ResponseData:
+    properties:
+      code:
+        description: 业务相应状态码
+        type: integer
+      data:
+        description: 数据
+        type: object
+      msg:
+        description: 提示信息
+        type: object
+    type: object
+  model.Post:
+    properties:
+      authorId:
+        type: integer
+      communityId:
+        type: integer
+      content:
+        type: string
+      post_id:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+    required:
+    - communityId
+    - content
+    - title
+    type: object
+  postmodel.VoteData:
+    properties:
+      direection:
+        description: 赞同 1或者反对 -1
+        example: "0"
+        type: string
+      post_id:
+        description: UserId  从token中获取
+        example: "0"
+        type: string
+    required:
+    - post_id
+    type: object
+  swagtype.UserLogin:
+    properties:
+      password:
+        description: 用户密码
+        type: string
+      username:
+        description: 用户姓名
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  swagtype.UserRegiter:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 用户密码
+        type: string
+      username:
+        description: 用户姓名
+        type: string
+    required:
+    - password
+    - username
+    type: object
+info:
+  contact: {}
+  description: This is a sample Server pets
+  license: {}
+  title: Swagger Example API
+  version: 0.0.1
+paths:
+  /api/v1/GetPostList:
+    get:
+      description: 获取所有的帖子
+      parameters:
+      - description: 页数
+        in: path
+        name: page
+        type: string
+      - description: size
+        in: path
+        name: size
+        type: string
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有的帖子
+      tags:
+      - 帖子相关接口
+  /api/v1/Login:
+    post:
+      parameters:
+      - description: 请示参数data
+        in: body
+        name: logindata
+        required: true
+        schema:
+          $ref: '#/definitions/swagtype.UserLogin'
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      summary: 用户登录接口
+      tags:
+      - 用户相关接口
+  /api/v1/post:
+    post:
+      description: 用户发帖
+      parameters:
+      - description: 请示参数data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Post'
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      - "": []
+      summary: 用户发帖
+      tags:
+      - 帖子相关接口
+  /api/v1/post/{postId}:
+    get:
+      description: 帖子详情
+      parameters:
+      - description: postId
+        in: path
+        name: postId
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      security:
+      - "": []
+      - ApiKeyAuth: []
+      summary: 帖子接口
+      tags:
+      - 帖子相关接口
+  /api/v1/register:
+    post:
+      parameters:
+      - description: 请示参数data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/swagtype.UserRegiter'
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      summary: 用户注册接口
+      tags:
+      - 用户相关接口
+  /api/v1/vote:
+    post:
+      description: 帖子投票
+      parameters:
+      - description: 投票参数data
+        in: body
+        name: voteData
+        required: true
+        schema:
+          $ref: '#/definitions/postmodel.VoteData'
+      responses:
+        "200":
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/controller.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      summary: 帖子投票
+      tags:
+      - 帖子相关接口
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: token
+    type: apiKey
+swagger: "2.0"
