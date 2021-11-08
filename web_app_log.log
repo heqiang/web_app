@@ -1,0 +1,57 @@
+{"level":"DEBUG","time":"2021-10-12T20:45:55.924+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"DEBUG","time":"2021-10-12T20:46:02.845+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"DEBUG","time":"2021-10-12T20:57:07.261+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T21:21:28.107+0800","caller":"logger/logger.go:72","msg":"/api/v1/register  ","status":200,"method":"POST","path":"/api/v1/register  ","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0}
+{"level":"INFO","time":"2021-10-12T21:23:28.335+0800","caller":"logger/logger.go:72","msg":"/ping ","status":200,"method":"GET","path":"/ping ","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0002197}
+{"level":"INFO","time":"2021-10-12T21:24:40.668+0800","caller":"logger/logger.go:72","msg":"/ping ","status":200,"method":"GET","path":"/ping ","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0}
+{"level":"INFO","time":"2021-10-12T21:26:03.618+0800","caller":"logger/logger.go:72","msg":"/ping","status":200,"method":"GET","path":"/ping","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0007827}
+{"level":"INFO","time":"2021-10-12T21:26:24.595+0800","caller":"logger/logger.go:72","msg":"/api/v1/register","status":200,"method":"POST","path":"/api/v1/register","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0004154}
+{"level":"INFO","time":"2021-10-12T21:27:40.723+0800","caller":"logger/logger.go:72","msg":"/api/v1/register","status":200,"method":"POST","path":"/api/v1/register","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.016105}
+{"level":"INFO","time":"2021-10-12T21:32:34.089+0800","caller":"logger/logger.go:72","msg":"/api/v1/Login","status":200,"method":"POST","path":"/api/v1/Login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0037278}
+{"level":"ERROR","time":"2021-10-12T21:34:26.708+0800","caller":"controller/community.go:22","msg":"社区获取 参数异常","error":"Key: 'Community.CommunityId' Error:Field validation for 'CommunityId' failed on the 'required' tag\nKey: 'Community.CommunityName' Error:Field validation for 'CommunityName' failed on the 'required' tag"}
+{"level":"INFO","time":"2021-10-12T21:34:26.708+0800","caller":"logger/logger.go:72","msg":"/api/v1/community","status":200,"method":"GET","path":"/api/v1/community","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0009706}
+{"level":"INFO","time":"2021-10-12T22:06:10.680+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:06:21.576+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:06:57.207+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:07:00.087+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:07:25.518+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0034277}
+{"level":"INFO","time":"2021-10-12T22:37:44.531+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:37:49.007+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:37:51.430+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0047514}
+{"level":"INFO","time":"2021-10-12T22:39:37.756+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:39:43.329+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:39:47.794+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0024582}
+{"level":"INFO","time":"2021-10-12T22:47:54.111+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:47:58.105+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"WARN","time":"2021-10-12T22:48:03.781+0800","caller":"mysqlc/community.go:21","msg":"no community in db"}
+{"level":"WARN","time":"2021-10-12T22:48:03.781+0800","caller":"community/community.go:41","msg":"logic.GetCommunityList() failed ","error":"communityList is nill"}
+{"level":"INFO","time":"2021-10-12T22:48:03.782+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0021187}
+{"level":"INFO","time":"2021-10-12T22:49:10.725+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:49:16.338+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:49:21.277+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0022901}
+{"level":"INFO","time":"2021-10-12T22:50:58.402+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T22:51:01.717+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T22:51:04.281+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0025966}
+{"level":"INFO","time":"2021-10-12T23:35:13.228+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T23:35:19.688+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T23:35:31.702+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0021938}
+{"level":"INFO","time":"2021-10-12T23:36:08.128+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"DEBUG","time":"2021-10-12T23:36:12.756+0800","caller":"web_app/main.go:32","msg":"Logger init successed"}
+{"level":"INFO","time":"2021-10-12T23:36:21.834+0800","caller":"logger/logger.go:72","msg":"/api/v1/communityList","status":200,"method":"GET","path":"/api/v1/communityList","query":"","ip":"::1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0014019}
+{"level":"INFO","time":"2021-10-12T23:37:22.433+0800","caller":"web_app/main.go:67","msg":"Shutdown Server ..."}
+{"level":"ERROR","time":"2021-10-20T23:49:05.153+0800","caller":"posts/post.go:105","msg":"请求参数验证错误","error":"Key: 'VoteData.post_id' Error:Field validation for 'post_id' failed on the 'required' tag"}
+{"level":"ERROR","time":"2021-10-20T23:49:26.071+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-20T23:49:50.355+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-20T23:50:28.338+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-20T23:52:11.396+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-20T23:56:48.385+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-21T22:13:47.824+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-21T22:14:06.453+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-10-21T22:35:04.287+0800","caller":"posts/post.go:116","msg":"votedForpost","error":"超出投票时间"}
+{"level":"ERROR","time":"2021-11-03T20:09:45.762+0800","caller":"user/user.go:30","msg":"用户注册 invaild param","error":"Key: 'User.UserName' Error:Field validation for 'UserName' failed on the 'required' tag\nKey: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"level":"WARN","time":"2021-11-03T20:17:59.547+0800","caller":"mysqlc/community.go:26","msg":"no such community"}
+{"level":"ERROR","time":"2021-11-03T20:17:59.548+0800","caller":"community/community.go:22","msg":"logic.GetCommunityDetail failed","error":"no such community"}
+{"level":"WARN","time":"2021-11-03T20:18:16.995+0800","caller":"mysqlc/community.go:26","msg":"no such community"}
+{"level":"ERROR","time":"2021-11-03T20:18:16.995+0800","caller":"community/community.go:22","msg":"logic.GetCommunityDetail failed","error":"no such community"}
+{"level":"WARN","time":"2021-11-03T20:18:21.096+0800","caller":"mysqlc/community.go:26","msg":"no such community"}
+{"level":"ERROR","time":"2021-11-03T20:18:21.096+0800","caller":"community/community.go:22","msg":"logic.GetCommunityDetail failed","error":"no such community"}

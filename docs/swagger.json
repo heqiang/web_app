@@ -1,0 +1,316 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample Server pets",
+        "title": "Swagger Example API",
+        "contact": {},
+        "license": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/",
+    "paths": {
+        "/api/v1/GetPostList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取所有的帖子",
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "获取所有的帖子",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "size",
+                        "name": "size",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/Login": {
+            "post": {
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户登录接口",
+                "parameters": [
+                    {
+                        "description": "请示参数data",
+                        "name": "logindata",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagtype.UserLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/post": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "": []
+                    }
+                ],
+                "description": "用户发帖",
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "用户发帖",
+                "parameters": [
+                    {
+                        "description": "请示参数data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/post/{postId}": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "帖子详情",
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "帖子接口",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "postId",
+                        "name": "postId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户注册接口",
+                "parameters": [
+                    {
+                        "description": "请示参数data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagtype.UserRegiter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/vote": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "帖子投票",
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "帖子投票",
+                "parameters": [
+                    {
+                        "description": "投票参数data",
+                        "name": "voteData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postmodel.VoteData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.ResponseData": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "业务相应状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object"
+                },
+                "msg": {
+                    "description": "提示信息",
+                    "type": "object"
+                }
+            }
+        },
+        "model.Post": {
+            "type": "object",
+            "required": [
+                "communityId",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "authorId": {
+                    "type": "integer"
+                },
+                "communityId": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "post_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "postmodel.VoteData": {
+            "type": "object",
+            "required": [
+                "post_id"
+            ],
+            "properties": {
+                "direection": {
+                    "description": "赞同 1或者反对 -1",
+                    "type": "string",
+                    "example": "0"
+                },
+                "post_id": {
+                    "description": "UserId  从token中获取",
+                    "type": "string",
+                    "example": "0"
+                }
+            }
+        },
+        "swagtype.UserLogin": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "description": "用户密码",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "swagtype.UserRegiter": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "用户密码",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户姓名",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "header"
+        }
+    }
+}
