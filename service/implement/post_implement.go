@@ -1,4 +1,4 @@
-package logic
+package implement
 
 import (
 	"strconv"
@@ -8,7 +8,9 @@ import (
 	"web_app/dao/redis"
 )
 
-func CreatePost(postmode *model.Post) (err error) {
+type Post struct{}
+
+func (p *Post) CreatePost(postmode *model.Post) (err error) {
 	err = mysqlc.InsertPost(postmode)
 	if err != nil {
 		return err
@@ -20,16 +22,16 @@ func CreatePost(postmode *model.Post) (err error) {
 	return nil
 }
 
-func GetPostDetail(postId int64) (postDetail *model.Post, err error) {
+func (p *Post) GetPostDetail(postId int64) (postDetail *model.Post, err error) {
 	return mysqlc.QueryPostDetail(postId)
 }
 
-func GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int64, err error) {
+func (p *Post) GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int64, err error) {
 	var posts []*model.Post
 	postList = []postmodel.ApiPostDetail{}
 	posts, total, err = mysqlc.QueryAllPosts(page, size)
 	for _, post := range posts {
-		postDetail, _ := GetPostDetail(post.Post_id)
+		postDetail, _ := p.GetPostDetail(post.Post_id)
 		user := mysqlc.QueryByUserId(postDetail.AuthorId)
 		community := mysqlc.QueryByCommId(postDetail.CommunityId)
 		postApiDetail := postmodel.ApiPostDetail{
@@ -62,7 +64,7 @@ func GetPostList(page, size int) (postList []postmodel.ApiPostDetail, total int6
 */
 
 // PostVote 帖子投票
-func PostVote(voted *postmodel.VoteData, userid int64) error {
+func (p *Post) PostVote(voted *postmodel.VoteData, userid int64) error {
 	return redis.VoteForPost(strconv.Itoa(int(userid)), strconv.Itoa(int(voted.PostId)), float64(voted.Direection))
 
 }

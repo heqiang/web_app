@@ -6,7 +6,8 @@ import (
 	"go.uber.org/zap"
 	"web_app/controller"
 	"web_app/dao/mysqlc/model"
-	"web_app/logic"
+	"web_app/service/implement"
+	"web_app/utils"
 )
 
 // RegisterHandle 注册
@@ -23,21 +24,22 @@ func RegisterHandle(c *gin.Context) {
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
 			//非vaildator类型的错误 直接返回
-			controller.ResponseError(c, controller.CodeInvaildParam)
+			utils.ResponseError(c, utils.CodeInvaildParam)
 			return
 		}
 		//请求失败
 		zap.L().Error("用户注册 invaild param", zap.Error(err))
-		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
+		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
 		return
 	}
 	// 2业务处理
-	err := logic.UserRegister(&p)
+	var user implement.User
+	err := user.Register(&p)
 	if err != nil {
-		controller.ResponseError(c, controller.CodeUserExist)
+		utils.ResponseError(c, utils.CodeUserExist)
 		return
 	}
-	controller.ResponseSuccess(c, nil)
+	utils.ResponseSuccess(c, nil)
 }
 
 // LoginHadle 登录
@@ -53,18 +55,19 @@ func LoginHadle(c *gin.Context) {
 	if err := c.ShouldBind(&u); err != nil {
 		errs, ok := err.(validator.ValidationErrors)
 		if ok {
-			controller.ResponseError(c, controller.CodeInvaildParam)
+			utils.ResponseError(c, utils.CodeInvaildParam)
 			return
 		}
 		zap.L().Error("登录失败", zap.Error(err))
-		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
+		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
 		return
 	}
-	token, err := logic.UserLogin(&u)
+	var user implement.User
+	token, err := user.Login(&u)
 	if err != nil {
-		controller.ResponseError(c, controller.CodeInvaildPasswordorUserName)
+		utils.ResponseError(c, utils.CodeInvaildPasswordorUserName)
 		return
 	}
 	//获取用户信息
-	controller.ResponseSuccess(c, token)
+	utils.ResponseSuccess(c, token)
 }

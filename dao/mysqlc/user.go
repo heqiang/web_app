@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"web_app/dao/mysqlc/model"
-	"web_app/pkg/jwt"
+	jwt2 "web_app/utils/jwt"
 )
 
 const serct = "1422127065@qq.com"
@@ -29,7 +29,7 @@ func QueryByUser(username, password string) (token string, err error) {
 		err = errors.New("用户不存在")
 		return
 	}
-	return jwt.GenToken(user.UserName, user.UserId)
+	return jwt2.GenToken(user.UserName, user.UserId)
 }
 
 func InsertUser(user *model.User) (err error) {

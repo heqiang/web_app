@@ -1,4 +1,4 @@
-package controller
+package utils
 
 type ResCode int64
 
@@ -12,7 +12,7 @@ const (
 
 	CodeNeedAuth
 	CodeInvaildAuth
-	CoodNeedLogin
+	CodeNeedLogin
 )
 
 var codeMsgMap = map[ResCode]string{
@@ -24,7 +24,7 @@ var codeMsgMap = map[ResCode]string{
 	CodeServerBusy:                "系统繁忙",
 	CodeNeedAuth:                  "需要验证",
 	CodeInvaildAuth:               "token有误",
-	CoodNeedLogin:                 "请登录",
+	CodeNeedLogin:                 "请登录",
 }
 
 func (c ResCode) Msg() string {
