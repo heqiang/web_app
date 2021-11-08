@@ -25,7 +25,7 @@ func Setup(conf *settings.AppConfig) *gin.Engine {
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middlerware.RateLimitMiddleware(2*time.Second, 1))
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", user.RegisterHandle)
-	v1.POST("/Login", user.LoginHadle)
+	v1.POST("/login", user.LoginHadle)
 	v1.Use(middlerware.JWTAuthMiddleware())
 	{
 		// 社区列表

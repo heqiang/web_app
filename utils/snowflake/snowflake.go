@@ -2,7 +2,6 @@ package snowflake
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 )
@@ -61,9 +60,4 @@ func GetSnowId() int64 {
 		panic(err)
 	}
 	return node.GetId()
-}
-func main() {
-	// 生成节点实例
-	id := GetSnowId()
-	fmt.Println(id)
 }

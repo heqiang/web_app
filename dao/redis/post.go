@@ -37,12 +37,12 @@ var (
 func CreatePostTime(postId int64) error {
 	pipeline := rdb.Pipeline()
 	// 帖子时间
-	rdb.ZAdd(ctx, KeyPostTimeZSet, &redis.Z{
+	pipeline.ZAdd(ctx, KeyPostTimeZSet, &redis.Z{
 		Score:  float64(time.Now().Unix()),
 		Member: postId,
 	})
 	// 帖子分数
-	rdb.ZAdd(ctx, KeyPostScoreZSet, &redis.Z{
+	pipeline.ZAdd(ctx, KeyPostScoreZSet, &redis.Z{
 		Score:  0,
 		Member: postId,
 	})
@@ -77,12 +77,12 @@ func VoteForPost(userid, postId string, value float64) (err error) {
 	// 计算两次投票的差值
 	diff := math.Abs(voteValue - value)
 	pipeline := rdb.TxPipeline()
-	rdb.ZIncrBy(ctx, KeyPostScoreZSet, op*diff*scorePerVote, postId)
+	pipeline.ZIncrBy(ctx, KeyPostScoreZSet, op*diff*scorePerVote, postId)
 	// value为0 时 取消该用户的投票
 	if value == 0 {
-		rdb.ZRem(ctx, KeyPostVoted+postId, userid)
+		pipeline.ZRem(ctx, KeyPostVoted+postId, userid)
 	}
-	rdb.ZAdd(ctx, KeyPostVoted+postId, &redis.Z{
+	pipeline.ZAdd(ctx, KeyPostVoted+postId, &redis.Z{
 		Score:  value,
 		Member: userid,
 	})

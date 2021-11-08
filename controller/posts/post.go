@@ -9,10 +9,10 @@ import (
 	"web_app/controller"
 	"web_app/controller/posts/postmodel"
 	"web_app/dao/mysqlc"
-
 	"web_app/dao/mysqlc/model"
-	"web_app/logic"
-	"web_app/pkg/snowflake"
+	"web_app/service/implement"
+	"web_app/utils"
+	snowflake2 "web_app/utils/snowflake"
 )
 
 const (
@@ -34,25 +34,27 @@ func PostCommunityHandle(c *gin.Context) {
 	//获取帖子的参数然后进行校验
 	var post model.Post
 	if err := c.ShouldBind(&post); err != nil {
+		fmt.Println(err)
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			controller.ResponseError(c, controller.CodeInvaildParam)
+			utils.ResponseError(c, utils.CodeInvaildParam)
 			return
 		}
 		zap.L().Error("参数有误", zap.Error(errs))
-		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
+		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
 		return
 	}
+	var p implement.Post
 	id, _ := controller.GetCurrentUser(c)
-	post.Post_id = snowflake.GetSnowId()
+	post.Post_id = snowflake2.GetSnowId()
 	post.AuthorId = id
-	err := logic.CreatePost(&post)
+	err := p.CreatePost(&post)
 	if err != nil {
 		zap.L().Error("logic.CreatePost failed", zap.Error(err))
-		controller.ResponseSuccess(c, controller.CodeServerBusy)
+		utils.ResponseSuccess(c, utils.CodeServerBusy)
 		return
 	}
-	controller.ResponseSuccess(c, controller.CodeSuccess)
+	utils.ResponseSuccess(c, utils.CodeSuccess)
 
 }
 
@@ -70,13 +72,14 @@ func GetPostDeatilHandle(c *gin.Context) {
 	postId, err := strconv.ParseInt(c.Param("postId"), 10, 64)
 	if err != nil {
 		zap.L().Error("get postId failed ", zap.Error(err))
-		controller.ResponseError(c, controller.CodeInvaildParam)
+		utils.ResponseError(c, utils.CodeInvaildParam)
 		return
 	}
-	postDetail, err := logic.GetPostDetail(postId)
+	var p implement.Post
+	postDetail, err := p.GetPostDetail(postId)
 	if err != nil {
 		zap.L().Error("logic.GetPostDetail failed ", zap.Error(err))
-		controller.ResponseError(c, controller.CodeServerBusy)
+		utils.ResponseError(c, utils.CodeServerBusy)
 		return
 	}
 	user := mysqlc.QueryByUserId(postDetail.AuthorId)
@@ -87,7 +90,7 @@ func GetPostDeatilHandle(c *gin.Context) {
 	}
 	postApiDetail.Community = community
 	postApiDetail.Post = postDetail
-	controller.ResponseSuccess(c, postApiDetail)
+	utils.ResponseSuccess(c, postApiDetail)
 }
 
 // GetPostListHandle
@@ -113,7 +116,8 @@ func GetPostListHandle(c *gin.Context) {
 		size = 10
 	}
 	offset := (page - 1) * size
-	allPosts, total, err := logic.GetPostList(offset, size)
+	var p implement.Post
+	allPosts, total, err := p.GetPostList(offset, size)
 	if err != nil {
 		zap.L().Error(" logic.GetPostList failed ", zap.Error(err))
 		return
@@ -125,10 +129,10 @@ func GetPostListHandle(c *gin.Context) {
 		Total: total,
 		Data:  allPosts,
 	}
-	controller.ResponseSuccess(c, paginationQ)
+	utils.ResponseSuccess(c, paginationQ)
 }
 
-// 帖子的列表按照时间还是分数
+// GetPostListHandler2 帖子的列表按照时间还是分数
 // GetPostListHandler2 /api/v1/post2?page=1&size=10&oreder=time
 // GetPostListHandler2 /api/v1/post2?page=1&size=10&oreder=score
 func GetPostListHandler2(c *gin.Context) {
@@ -140,7 +144,7 @@ func GetPostListHandler2(c *gin.Context) {
 	err := c.ShouldBindQuery(&paramlist)
 	if err != nil {
 		zap.L().Error("GetPostListHandle2 with invaild param", zap.Error(err))
-		controller.ResponseError(c, controller.CodeInvaildParam)
+		utils.ResponseError(c, utils.CodeInvaildParam)
 		return
 	}
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -155,7 +159,8 @@ func GetPostListHandler2(c *gin.Context) {
 		size = 10
 	}
 	offset := (page - 1) * size
-	allPosts, total, err := logic.GetPostList(offset, size)
+	var p implement.Post
+	allPosts, total, err := p.GetPostList(offset, size)
 	category := c.Query("order")
 	fmt.Println(category)
 	if err != nil {
@@ -169,7 +174,7 @@ func GetPostListHandler2(c *gin.Context) {
 		Total: total,
 		Data:  allPosts,
 	}
-	controller.ResponseSuccess(c, paginationQ)
+	utils.ResponseSuccess(c, paginationQ)
 }
 
 // PostVotedHandle
@@ -187,23 +192,24 @@ func PostVotedHandle(c *gin.Context) {
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
 			zap.L().Error("请求参数错误", zap.Error(err))
-			controller.ResponseError(c, controller.CodeInvaildParam)
+			utils.ResponseError(c, utils.CodeInvaildParam)
 			return
 		}
 		zap.L().Error("请求参数验证错误", zap.Error(err))
-		controller.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), controller.CodeInvaildParam)
+		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
 		return
 	}
 	userId, err := controller.GetCurrentUser(c)
 	if err != nil {
-		controller.ResponseError(c, controller.CodeNeedAuth)
+		utils.ResponseError(c, utils.CodeNeedAuth)
 		return
 	}
-	err = logic.PostVote(voted, userId)
+	var p implement.Post
+	err = p.PostVote(voted, userId)
 	if err != nil {
 		zap.L().Error("votedForpost", zap.Error(err))
-		controller.ResponseError(c, controller.CodeServerBusy)
+		utils.ResponseError(c, utils.CodeServerBusy)
 		return
 	}
-	controller.ResponseSuccess(c, nil)
+	utils.ResponseSuccess(c, nil)
 }

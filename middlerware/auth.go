@@ -3,7 +3,8 @@ package middlerware
 import (
 	"github.com/gin-gonic/gin"
 	"web_app/controller"
-	"web_app/pkg/jwt"
+	"web_app/utils"
+	jwt2 "web_app/utils/jwt"
 )
 
 // JWTAuthMiddleware 基于JWT的认证中间件
@@ -11,13 +12,13 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("token")
 		if authHeader == "" {
-			controller.ResponseError(c, controller.CodeNeedAuth)
+			utils.ResponseError(c, utils.CodeNeedAuth)
 			c.Abort()
 			return
 		}
-		mc, err := jwt.ParseToken(authHeader)
+		mc, err := jwt2.ParseToken(authHeader)
 		if err != nil {
-			controller.ResponseError(c, controller.CodeInvaildAuth)
+			utils.ResponseError(c, utils.CodeInvaildAuth)
 			c.Abort()
 			return
 		}
